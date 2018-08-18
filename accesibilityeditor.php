@@ -81,7 +81,6 @@
             ?>
         </div>
 		<canvas id="can" width="1000" height="1000" style="position:absolute;z-index: 2;">
-		<object data="text.txt"></object>
 		</canvas>
 	
     </body>
