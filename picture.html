@@ -4,18 +4,75 @@
 <title>Multimedia project</title>
 </head>
 <body>
-
+<script type="text/javascript">
+    function thumb(files) {
+ 
+        if (files == null || files == undefined) {
+            document.write("This Browser has no support for HTML5 FileReader yet!");
+            return false;
+        }
+ 
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var imageType = /image.*/;
+ 
+            if (!file.type.match(imageType)) {
+                continue;
+ 
+            }
+ 
+            var reader = new FileReader();
+ 
+            if (reader != null) {
+ 
+                reader.onload = GetThumbnail;
+                reader.readAsDataURL(file);
+            }
+ 
+ 
+        }
+    }
+     
+    function GetThumbnail(e) {
+        var myCan = document.createElement('canvas');
+        var img = new Image();
+        img.src = e.target.result;
+        img.onload = function () {
+ 
+            myCan.id = "myTempCanvas";
+            //var tsize = document.getElementById("txtThumbSize").value;
+            myCan.width = Number(600);
+            myCan.height = Number(400);
+            if (myCan.getContext) {
+                var cntxt = myCan.getContext("2d");
+                cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
+                var dataURL = myCan.toDataURL();
+ 
+ 
+                if (dataURL != null && dataURL != undefined) {
+                    var nImg = document.createElement('img');
+                    nImg.src = dataURL;
+                    document.body.appendChild(nImg);
+ 
+                }
+                else
+                    alert('unable to get context');
+ 
+            }
+ 
+        }
+ 
+    }
+</script>
 <h1>Picture</h1>
 <p>This page allows us to load local photos, or if the webpage is hosted on a dedicated webserver the photos are streamed over the network.</p>
 <img src="workcoffee.jpeg" alt="coffee" style="width:450px;height:300px;">
 <img src="donut.jpeg" alt="coffee" style="width:450px;height:300px;">
+<hr>
 <div>
-    <label for="profile_pic">Choose file to upload</label>
-    <input type="file" id="profile_pic" name="profile_pic"
-          accept=".jpg, .jpeg, .png">
-  </div>
-  <div>
-    <button>Submit</button>
-  </div>
+<p>Local file display example</p>
+<label> Select File To display : </label>
+<input type="file" id="input" multiple onchange="thumb(this.files)"> 
+</div>
 </body>
 </html>
